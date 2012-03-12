@@ -1,19 +1,12 @@
 package www.codingwith.us;
 
-import java.util.ArrayList;
-
 import www.codingwith.us.view.MyViewGroup;
 import www.codingwith.us.view.MyViewGroup.ScrollToScreenCallback;
 import www.codingwith.us.view.Rotate3dAnimation;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.ViewGroup.LayoutParams;
-import android.view.KeyEvent;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,39 +34,12 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback {
         
         MyViewGroup myViewGroup = new MyViewGroup(this);
         
-        ImageView image = new ImageView(this);
-        image.setBackgroundResource(R.drawable.volume_0_ic);
-        ImageView image1 = new ImageView(this);
-        image1.setBackgroundResource(R.drawable.volume_1_ic);
-        ImageView image2 = new ImageView(this);
-        image2.setBackgroundResource(R.drawable.volume_2_ic);
-        ImageView image3 = new ImageView(this);
-        image3.setBackgroundResource(R.drawable.volume_3_ic);
-        
-        ImageView mod1 = new ImageView(this);
-        mod1.setBackgroundResource(R.drawable.rootblock_block_blue_1);
-        ImageView mod2 = new ImageView(this);
-        mod2.setBackgroundResource(R.drawable.rootblock_block_blue_2);
-        
-        
-        LinearLayout lin = new LinearLayout(this);
-        lin.setBackgroundColor(0xff00ffff);
-        GridView grid1 = new GridView(this);
-        grid1.setNumColumns(2);
-        ArrayList<String> data = new ArrayList<String>();
-        for (int i = 0; i < 8; i++) {
-        	data.add(i+"");
+        String[] channel = getResources().getStringArray(R.array.channel);
+        LinearLayout page = null;
+        for (int i = 0; i < channel.length; i++) {
+    		page = (LinearLayout)getLayoutInflater().inflate(R.layout.channel, null);
+    		myViewGroup.addView(page);
 		}
-        ArrayAdapter<String> gridAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.channel, R.id.grit_item_txt, data);
-        grid1.setAdapter(gridAdapter);
-//        lin.addView(image1);
-        grid1.setLayoutParams(new LayoutParams(480, 800));
-        lin.addView(grid1);
-        
-
-        myViewGroup.addView(lin);
-        myViewGroup.addView(image);
-
 		
         
         myViewGroup.setScrollToScreenCallback(this);        
