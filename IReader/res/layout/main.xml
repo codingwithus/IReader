@@ -8,16 +8,12 @@
         android:id="@+id/frameLayout1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-
+
         <LinearLayout
+            android:id="@+id/rootblock_body"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <FrameLayout
-                android:id="@+id/rootblock_body"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-            </FrameLayout>
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
             
         </LinearLayout>
 

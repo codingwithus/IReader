@@ -6,7 +6,6 @@ import www.codingwith.us.view.Rotate3dAnimation;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,15 +29,13 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback {
         tool = (LinearLayout)findViewById(R.id.tool);
         ((MyApplication)getApplication()).SetPageInfoWidth(tool.getWidth());
         
-        FrameLayout rootblock_body = (FrameLayout)findViewById(R.id.rootblock_body);
+        LinearLayout rootblock_body = (LinearLayout)findViewById(R.id.rootblock_body);
         
         MyViewGroup myViewGroup = new MyViewGroup(this);
         
         String[] channel = getResources().getStringArray(R.array.channel);
-        LinearLayout page = null;
-        for (int i = 0; i < channel.length; i++) {
-    		page = (LinearLayout)getLayoutInflater().inflate(R.layout.channel, null);
-    		myViewGroup.addView(page);
+        for (int i = 0; i < 4; i++) {
+    		myViewGroup.addView((LinearLayout)getLayoutInflater().inflate(R.layout.channel_list, null));
 		}
 		
         
