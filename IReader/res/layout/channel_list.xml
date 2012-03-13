@@ -2,106 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" android:gravity="center_vertical">
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" android:layout_marginLeft="20dp">
+        android:orientation="horizontal" android:layout_margin="30dp">
 
         <TableLayout
-            android:id="@+id/TableLayout01"
+            android:id="@+id/channel_list_table"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-
-            <TableRow
-                android:id="@+id/TableRow04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout07"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_blue_1" >
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout06"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_blue_1" >
-                </FrameLayout>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/TableRow03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout05"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_blue_1" >
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_blue_1" >
-                </FrameLayout>
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/TableRow02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/frameLayout1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:background="@drawable/rootblock_block_blue_1" android:layout_margin="5dp">
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rootblock_block_blue_1" android:layout_margin="5dp">
-
-                </FrameLayout>
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/TableRow01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_orange_1" >
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/FrameLayout02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/rootblock_block_orange_1" >
-                </FrameLayout>
-            </TableRow>
 
         </TableLayout>
 

@@ -1,5 +1,6 @@
 package www.codingwith.us.view;
 
+import www.codingwith.us.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,7 +10,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 public class MyViewGroup extends ViewGroup {
 
@@ -67,6 +72,27 @@ public class MyViewGroup extends ViewGroup {
 			}
 
 			public void onLongPress(MotionEvent e) {
+				Log.i("", "nihao");
+				for (int i = 0; i < getChildCount(); i++) {
+					LinearLayout page = (LinearLayout)getChildAt(i);
+					TableLayout channel_list_table = (TableLayout) page
+							.findViewById(R.id.channel_list_table);
+					for (int j = 0; j < channel_list_table.getChildCount(); j++) {
+						TableRow tableRow = (TableRow)channel_list_table.getChildAt(j);
+						for (int k = 0; k < tableRow.getChildCount(); k++) {
+							LinearLayout item = (LinearLayout)tableRow.getChildAt(k);
+							ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
+							if (channel_item_remove.isShown()) {
+								channel_item_remove.setVisibility(View.INVISIBLE);
+								item.getChildAt(0).setBackgroundResource(R.drawable.channel_item_selector);
+							}else {
+								channel_item_remove.setVisibility(View.VISIBLE);
+								item.getChildAt(0).setBackgroundResource(R.drawable.rootblock_block_blue_3);
+							}							
+						}
+						
+					}
+				}
 			}
 
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
@@ -119,7 +145,12 @@ public class MyViewGroup extends ViewGroup {
 			postInvalidate();
 		}
 	}
-
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		gestureDetector.onTouchEvent(ev);
+		return super.onInterceptTouchEvent(ev);
+	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		gestureDetector.onTouchEvent(event);
@@ -158,7 +189,7 @@ public class MyViewGroup extends ViewGroup {
 	}
 
 	private void snapToDestination() {
-//		scrollToScreen((getScrollX() + (getWidth() / 2)) / getWidth());
+		// scrollToScreen((getScrollX() + (getWidth() / 2)) / getWidth());
 	}
 
 	public interface ScrollToScreenCallback {
