@@ -31,8 +31,6 @@ public class MyViewGroup extends ViewGroup {
 		this.scrollToScreenCallback = scrollToScreenCallback;
 	}
 
-	private boolean fling;
-
 	public MyViewGroup(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initView(context);
@@ -70,7 +68,6 @@ public class MyViewGroup extends ViewGroup {
 			}
 
 			public void onLongPress(MotionEvent e) {
-				ShowDelIcon();
 			}
 
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
@@ -83,12 +80,10 @@ public class MyViewGroup extends ViewGroup {
 						.getScaledMinimumFlingVelocity()) {
 					if (velocityX > 0 && currentScreenIndex > 0) {
 						Log.d(TAG, ">>>>fling to left");
-						fling = true;
 						scrollToScreen(currentScreenIndex - 1);
 					} else if (velocityX < 0
 							&& currentScreenIndex < getChildCount() - 1) {
 						Log.d(TAG, ">>>>fling to right");
-						fling = true;
 						scrollToScreen(currentScreenIndex + 1);
 					}
 				}
@@ -123,31 +118,18 @@ public class MyViewGroup extends ViewGroup {
 			postInvalidate();
 		}
 	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		gestureDetector.onTouchEvent(event);
+		return true;
+	}
+
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
-		gestureDetector.onTouchEvent(ev);
-		return super.onInterceptTouchEvent(ev);
-	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		gestureDetector.onTouchEvent(event);
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			break;
-		case MotionEvent.ACTION_MOVE:
-			break;
-		case MotionEvent.ACTION_UP:
-			if (!fling) {
-				snapToDestination();
-			}
-			fling = false;
-			break;
-		default:
-			break;
-		}
-		return true;
+		return gestureDetector.onTouchEvent(ev);
 	}
 
 	public void scrollToScreen(int whichScreen) {
@@ -166,28 +148,25 @@ public class MyViewGroup extends ViewGroup {
 		}
 	}
 
-	private void snapToDestination() {
-		// scrollToScreen((getScrollX() + (getWidth() / 2)) / getWidth());
-	}
-
 	public interface ScrollToScreenCallback {
 		public void callback(int currentIndex);
 	}
-	
-	//long click delete icon show/hide
-	public void ShowDelIcon(){
+
+	// long click delete icon show/hide
+	public void ShowDelIcon() {
 		for (int i = 0; i < getChildCount(); i++) {
-			FixedGridLayout page = (FixedGridLayout)getChildAt(i);
+			FixedGridLayout page = (FixedGridLayout) getChildAt(i);
 			for (int j = 0; j < page.getChildCount(); j++) {
-				LinearLayout item = (LinearLayout)page.getChildAt(j);
-				ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
+				LinearLayout item = (LinearLayout) page.getChildAt(j);
+				ImageView channel_item_remove = (ImageView) item
+						.findViewById(R.id.channel_item_remove);
 				if (channel_item_remove.isShown()) {
 					channel_item_remove.setVisibility(INVISIBLE);
-				}else {
+				} else {
 					channel_item_remove.setVisibility(VISIBLE);
 				}
 			}
 		}
 	}
-	
+
 }

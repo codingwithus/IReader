@@ -10,13 +10,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScrollActivity extends Activity implements ScrollToScreenCallback, android.view.View.OnClickListener {
+public class ScrollActivity extends Activity implements ScrollToScreenCallback,
+		android.view.View.OnClickListener {
 
 	private TextView pageinfo_num;
 	private LinearLayout pageinfo;
@@ -25,6 +28,7 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 	private String mStrChannel = "";
 	private ArrayList<String> mDisplayed = new ArrayList<String>();
 	private ArrayList<String> mHided = new ArrayList<String>();
+	int curScreen = 1;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -42,19 +46,20 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 
 		myViewGroup = new MyViewGroup(this);
 
-		
-		SharedPreferences p_channel = getSharedPreferences("p_channel", MODE_PRIVATE);
+		SharedPreferences p_channel = getSharedPreferences("p_channel",
+				MODE_PRIVATE);
 		p_channel.edit().putString("p_channel_name", "").commit();
 		mStrChannel = p_channel.getString("p_channel_name", "");
 		if (mStrChannel == "") {
-			String[]  channel_init = getResources().getStringArray(R.array.channel_init);
+			String[] channel_init = getResources().getStringArray(
+					R.array.channel_init);
 			for (int i = 0; i < channel_init.length; i++) {
 				String temp = channel_init[i] + ",1|";
-				mStrChannel  = mStrChannel + temp;
+				mStrChannel = mStrChannel + temp;
 			}
 			p_channel.edit().putString("p_channel_name", mStrChannel).commit();
 		}
-		
+
 		String[] arrChannel = mStrChannel.split("\\|");
 		for (int i = 0; i < arrChannel.length; i++) {
 			String[] temp_arr = arrChannel[i].split(",");
@@ -62,14 +67,13 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 				if (temp_arr[1] != null) {
 					if (temp_arr[1].equalsIgnoreCase("1")) {
 						mDisplayed.add(temp_arr[0]);
-					}else {
+					} else {
 						mHided.add(temp_arr[0]);
 					}
 				}
 			}
 		}
-		
-		
+
 		InitView();
 
 		myViewGroup.setScrollToScreenCallback(this);
@@ -79,9 +83,14 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 
 	public void callback(int currentIndex) {
 		// TODO Auto-generated method stub
-		pageinfo_num.setText((currentIndex + 1) + "");
-		applyRotation(0, 180);
-
+		curScreen = currentIndex + 1;
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				// execute the task
+				pageinfo_num.setText(curScreen + "");
+				applyRotation(0, 180);
+			}
+		}, 1000);
 	}
 
 	/**
@@ -101,7 +110,7 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 		// The animation listener is used to trigger the next animation
 		final Rotate3dAnimation rotation = new Rotate3dAnimation(start, end,
 				centerX, centerY, 0.0f, true);
-		rotation.setDuration(200);
+		rotation.setDuration(300);
 
 		pageinfo.startAnimation(rotation);
 	}
@@ -115,18 +124,31 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 		for (int i = 0; i < page_num; i++) {
 			FixedGridLayout page = new FixedGridLayout(this);
 			for (int j = 0; j < 8; j++) {
-				int index = i*8+j;
+				int index = i * 8 + j;
 				if (index >= mDisplayed.size()) {
 					break;
 				}
-				LinearLayout item = (LinearLayout) getLayoutInflater()
-						.inflate(R.layout.channel_item, null);
-				LinearLayout channel_item_layout = (LinearLayout)item.findViewById(R.id.channel_item_layout);
+				LinearLayout item = (LinearLayout) getLayoutInflater().inflate(
+						R.layout.channel_item, null);
+				LinearLayout channel_item_layout = (LinearLayout) item
+						.findViewById(R.id.channel_item_layout);
 				channel_item_layout.setTag(mDisplayed.get(index));
 				channel_item_layout.setOnClickListener(this);
-				TextView channel_item_txt = (TextView)item.findViewById(R.id.channel_item_txt);
+				channel_item_layout
+						.setOnLongClickListener(new OnLongClickListener() {
+
+							@Override
+							public boolean onLongClick(View v) {
+								// TODO Auto-generated method stub
+								myViewGroup.ShowDelIcon();
+								return true;
+							}
+						});
+				TextView channel_item_txt = (TextView) item
+						.findViewById(R.id.channel_item_txt);
 				channel_item_txt.setText(mDisplayed.get(index));
-				ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
+				ImageView channel_item_remove = (ImageView) item
+						.findViewById(R.id.channel_item_remove);
 				channel_item_remove.setTag(mDisplayed.get(index));
 				channel_item_remove.setOnClickListener(this);
 				if (!mDisplayed.get(index).equalsIgnoreCase("")) {
@@ -147,7 +169,7 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback, 
 			InitView();
 			break;
 		case R.id.channel_item_layout:
-			Intent intent = new Intent(this,ChannelActivity.class);
+			Intent intent = new Intent(this, ChannelActivity.class);
 			intent.putExtra("channel_name", v.getTag().toString());
 			startActivity(intent);
 			break;
