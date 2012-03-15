@@ -7,23 +7,24 @@ import www.codingwith.us.view.MyViewGroup;
 import www.codingwith.us.view.MyViewGroup.ScrollToScreenCallback;
 import www.codingwith.us.view.Rotate3dAnimation;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-public class ScrollActivity extends Activity implements ScrollToScreenCallback {
+public class ScrollActivity extends Activity implements ScrollToScreenCallback, android.view.View.OnClickListener {
 
 	private TextView pageinfo_num;
 	private LinearLayout pageinfo;
 	private LinearLayout tool;
-	private String[] channel;
 	private MyViewGroup myViewGroup;
+	private String mStrChannel = "";
+	private ArrayList<String> mDisplayed = new ArrayList<String>();
+	private ArrayList<String> mHided = new ArrayList<String>();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,66 +41,36 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback {
 		LinearLayout rootblock_body = (LinearLayout) findViewById(R.id.rootblock_body);
 
 		myViewGroup = new MyViewGroup(this);
+
 		
-//		FixedGridLayout grid = new FixedGridLayout(this);
-//		for (int i = 0; i < 8; i++) {
-//			LinearLayout item = (LinearLayout) getLayoutInflater()
-//					.inflate(R.layout.channel_item, null);
-//			grid.addView(item);
-//		}
-//		myViewGroup.addView(grid);
-
-		channel = getResources().getStringArray(R.array.channel);
-		int page_num = channel.length / 8;
-		if (page_num % 8 > 0) {
-			page_num++;
-		}
-
-		String[][][] data = new String[page_num][4][2];
-		for (int i = 0; i < data.length; i++) {
-			LinearLayout page = (LinearLayout) getLayoutInflater().inflate(
-					R.layout.channel_list, null);
-			TableLayout channel_list_table = (TableLayout) page
-					.findViewById(R.id.channel_list_table);
-			for (int j = 0; j < data[i].length; j++) {
-				TableRow tableRow = new TableRow(this);
-				for (int j2 = 0; j2 < data[i][j].length; j2++) {
-					int item_index = i*8 + j*2 +j2;
-					if (item_index >= channel.length) {
-						break;
-					}
-					LinearLayout item = (LinearLayout) getLayoutInflater()
-							.inflate(R.layout.channel_item, null);
-					TextView txt = (TextView) item
-							.findViewById(R.id.channel_item_txt);
-					txt.setText(channel[item_index]);
-					ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
-					ArrayList<Integer> item_data = new ArrayList<Integer>();
-					item_data.add(i);
-					item_data.add(j);
-					item_data.add(j2);
-					item_data.add(item_index);					
-					channel_item_remove.setTag(item_data);
-					channel_item_remove.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							// TODO Auto-generated method stub
-							@SuppressWarnings("unchecked")
-							ArrayList<Integer> temp_data = (ArrayList<Integer>)v.getTag();
-							LinearLayout temp_page = (LinearLayout)myViewGroup.getChildAt(temp_data.get(0));
-							TableLayout channel_list_table = (TableLayout) temp_page
-									.findViewById(R.id.channel_list_table);
-							TableRow temp_row= (TableRow)channel_list_table.getChildAt(temp_data.get(1));
-							temp_row.removeViewAt(temp_data.get(2));							
-						}
-					});
-					tableRow.addView(item);
-				}
-				channel_list_table.addView(tableRow);
+		SharedPreferences p_channel = getSharedPreferences("p_channel", MODE_PRIVATE);
+		p_channel.edit().putString("p_channel_name", "").commit();
+		mStrChannel = p_channel.getString("p_channel_name", "");
+		if (mStrChannel == "") {
+			String[]  channel_init = getResources().getStringArray(R.array.channel_init);
+			for (int i = 0; i < channel_init.length; i++) {
+				String temp = channel_init[i] + ",1|";
+				mStrChannel  = mStrChannel + temp;
 			}
-			myViewGroup.addView(page);
+			p_channel.edit().putString("p_channel_name", mStrChannel).commit();
 		}
+		
+		String[] arrChannel = mStrChannel.split("\\|");
+		for (int i = 0; i < arrChannel.length; i++) {
+			String[] temp_arr = arrChannel[i].split(",");
+			if (temp_arr != null) {
+				if (temp_arr[1] != null) {
+					if (temp_arr[1].equalsIgnoreCase("1")) {
+						mDisplayed.add(temp_arr[0]);
+					}else {
+						mHided.add(temp_arr[0]);
+					}
+				}
+			}
+		}
+		
+		
+		InitView();
 
 		myViewGroup.setScrollToScreenCallback(this);
 		rootblock_body.addView(myViewGroup);
@@ -135,7 +106,55 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback {
 		pageinfo.startAnimation(rotation);
 	}
 
-	public void InitChannel() {
+	public void InitView() {
+		myViewGroup.removeAllViews();
+		int page_num = mDisplayed.size() / 8;
+		if (mDisplayed.size() % 8 > 0) {
+			page_num++;
+		}
+		for (int i = 0; i < page_num; i++) {
+			FixedGridLayout page = new FixedGridLayout(this);
+			for (int j = 0; j < 8; j++) {
+				int index = i*8+j;
+				if (index >= mDisplayed.size()) {
+					break;
+				}
+				LinearLayout item = (LinearLayout) getLayoutInflater()
+						.inflate(R.layout.channel_item, null);
+				LinearLayout channel_item_layout = (LinearLayout)item.findViewById(R.id.channel_item_layout);
+				channel_item_layout.setTag(mDisplayed.get(index));
+				channel_item_layout.setOnClickListener(this);
+				TextView channel_item_txt = (TextView)item.findViewById(R.id.channel_item_txt);
+				channel_item_txt.setText(mDisplayed.get(index));
+				ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
+				channel_item_remove.setTag(mDisplayed.get(index));
+				channel_item_remove.setOnClickListener(this);
+				if (!mDisplayed.get(index).equalsIgnoreCase("")) {
+					page.addView(item);
+				}
+			}
+			myViewGroup.addView(page);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.channel_item_remove:
+			mDisplayed.remove(v.getTag().toString());
+			mHided.add(v.getTag().toString());
+			InitView();
+			break;
+		case R.id.channel_item_layout:
+			Intent intent = new Intent(this,ChannelActivity.class);
+			intent.putExtra("channel_name", v.getTag().toString());
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

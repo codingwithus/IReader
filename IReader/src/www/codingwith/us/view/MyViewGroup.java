@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 public class MyViewGroup extends ViewGroup {
 
@@ -72,27 +70,7 @@ public class MyViewGroup extends ViewGroup {
 			}
 
 			public void onLongPress(MotionEvent e) {
-				Log.i("", "nihao");
-				for (int i = 0; i < getChildCount(); i++) {
-					LinearLayout page = (LinearLayout)getChildAt(i);
-					TableLayout channel_list_table = (TableLayout) page
-							.findViewById(R.id.channel_list_table);
-					for (int j = 0; j < channel_list_table.getChildCount(); j++) {
-						TableRow tableRow = (TableRow)channel_list_table.getChildAt(j);
-						for (int k = 0; k < tableRow.getChildCount(); k++) {
-							LinearLayout item = (LinearLayout)tableRow.getChildAt(k);
-							ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
-							if (channel_item_remove.isShown()) {
-								channel_item_remove.setVisibility(View.INVISIBLE);
-								item.getChildAt(0).setBackgroundResource(R.drawable.channel_item_selector);
-							}else {
-								channel_item_remove.setVisibility(View.VISIBLE);
-								item.getChildAt(0).setBackgroundResource(R.drawable.rootblock_block_blue_3);
-							}							
-						}
-						
-					}
-				}
+				ShowDelIcon();
 			}
 
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
@@ -195,4 +173,21 @@ public class MyViewGroup extends ViewGroup {
 	public interface ScrollToScreenCallback {
 		public void callback(int currentIndex);
 	}
+	
+	//long click delete icon show/hide
+	public void ShowDelIcon(){
+		for (int i = 0; i < getChildCount(); i++) {
+			FixedGridLayout page = (FixedGridLayout)getChildAt(i);
+			for (int j = 0; j < page.getChildCount(); j++) {
+				LinearLayout item = (LinearLayout)page.getChildAt(j);
+				ImageView channel_item_remove = (ImageView)item.findViewById(R.id.channel_item_remove);
+				if (channel_item_remove.isShown()) {
+					channel_item_remove.setVisibility(INVISIBLE);
+				}else {
+					channel_item_remove.setVisibility(VISIBLE);
+				}
+			}
+		}
+	}
+	
 }

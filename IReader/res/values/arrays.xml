@@ -16,7 +16,7 @@
 
 <resources>
     <!--  -->
-    <string-array name="channel">
+    <string-array name="channel_init">
         <item>新浪微博</item>
         <item>应用推荐</item>
         <item>腾讯微博</item>
