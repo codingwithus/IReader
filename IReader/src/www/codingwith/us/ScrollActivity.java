@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
@@ -179,4 +180,15 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 		}
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			if (myViewGroup.bShow) {
+				myViewGroup.ShowDelIcon();
+				return true;
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }
