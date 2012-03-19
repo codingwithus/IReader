@@ -3,10 +3,17 @@
  */
 package www.codingwith.us;
 
-import www.codingwith.us.view.MyPage;
+import www.codingwith.us.view.MyWebView;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
 /**
@@ -16,6 +23,8 @@ import android.widget.ViewFlipper;
 public class ChannelActivity extends Activity {
 
 	private ViewFlipper channel_viewFlipper;
+	private String Url;
+	private GestureDetector gesture;
 
 	/**
 	 * 
@@ -28,20 +37,112 @@ public class ChannelActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.channel);
+		requestWindowFeature(Window.FEATURE_PROGRESS);
+		channel_viewFlipper = new ViewFlipper(this);
+		setContentView(channel_viewFlipper);
 
-		channel_viewFlipper = (ViewFlipper) findViewById(R.id.channel_viewFlipper);
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		String channel_name = bundle.getString("channel_name");
+		Url = "http://www.hutaoshu.com/m?channel=" + channel_name;
+
 		for (int i = 0; i < 4; i++) {
-			MyPage page = new MyPage(this);
-			if (i % 2 == 0) {
-				page.SetViewFlipper(channel_viewFlipper, "http://www.baidu.com");
+			MyWebView webView = new MyWebView(this);
+			if (i % 2 > 0) {
+				webView.loadUrl(Url);
 			} else {
-				page.SetViewFlipper(
-						channel_viewFlipper,
-						"http://wapp.baidu.com/?ssid=0&from=0&bd_page_type=1&uid=wiaui_1331883276_4810&pu=sz%40224_220&idx=20000&itj=23");
+				webView.loadUrl("http://www.hutaoshu.com");
 			}
-			channel_viewFlipper.addView(page);
+			channel_viewFlipper.addView(webView);
 		}
+
+		gesture = new GestureDetector(new OnGestureListener() {
+
+			@Override
+			public boolean onDown(MotionEvent e) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2,
+					float velocityX, float velocityY) {
+				// TODO Auto-generated method stub
+				if (Math.abs(e1.getX() - e2.getX()) > 150
+						&& Math.abs(velocityX) > ViewConfiguration.get(
+								getApplicationContext())
+								.getScaledMinimumFlingVelocity()) {
+					if (e1.getX() > e2.getX()) {
+						// to left
+						channel_viewFlipper.setInAnimation(AnimationUtils
+								.loadAnimation(ChannelActivity.this,
+										R.anim.push_left_in));
+						channel_viewFlipper.setOutAnimation(AnimationUtils
+								.loadAnimation(ChannelActivity.this,
+										R.anim.push_left_out));
+						channel_viewFlipper.showNext();
+					} else if (e1.getX() < e2.getX()) {
+						// to right
+						channel_viewFlipper.setInAnimation(AnimationUtils
+								.loadAnimation(ChannelActivity.this,
+										R.anim.push_right_in));
+						channel_viewFlipper.setOutAnimation(AnimationUtils
+								.loadAnimation(ChannelActivity.this,
+										R.anim.push_right_out));
+						channel_viewFlipper.showPrevious();
+					} else {
+						return false;
+					}
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void onLongPress(MotionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public boolean onScroll(MotionEvent e1, MotionEvent e2,
+					float distanceX, float distanceY) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public void onShowPress(MotionEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public boolean onSingleTapUp(MotionEvent e) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+		});
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		MyWebView currFlipperView = (MyWebView) channel_viewFlipper
+				.getCurrentView();
+		if (currFlipperView != null && currFlipperView.canGoBack()
+				&& keyCode == KeyEvent.KEYCODE_BACK) {
+			currFlipperView.goBack();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		gesture.onTouchEvent(ev);
+		return super.dispatchTouchEvent(ev);
 	}
 }
