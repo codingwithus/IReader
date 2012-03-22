@@ -37,7 +37,7 @@ public class ChannelActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_PROGRESS);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		channel_viewFlipper = new ViewFlipper(this);
 		setContentView(channel_viewFlipper);
 
@@ -74,21 +74,21 @@ public class ChannelActivity extends Activity {
 								.getScaledMinimumFlingVelocity()) {
 					if (e1.getX() > e2.getX()) {
 						// to left
-						channel_viewFlipper.setInAnimation(AnimationUtils
-								.loadAnimation(ChannelActivity.this,
-										R.anim.push_left_in));
-						channel_viewFlipper.setOutAnimation(AnimationUtils
-								.loadAnimation(ChannelActivity.this,
-										R.anim.push_left_out));
+//						channel_viewFlipper.setInAnimation(AnimationUtils
+//								.loadAnimation(ChannelActivity.this,
+//										R.anim.push_left_in));
+//						channel_viewFlipper.setOutAnimation(AnimationUtils
+//								.loadAnimation(ChannelActivity.this,
+//										R.anim.push_left_out));
 						channel_viewFlipper.showNext();
 					} else if (e1.getX() < e2.getX()) {
 						// to right
-						channel_viewFlipper.setInAnimation(AnimationUtils
-								.loadAnimation(ChannelActivity.this,
-										R.anim.push_right_in));
-						channel_viewFlipper.setOutAnimation(AnimationUtils
-								.loadAnimation(ChannelActivity.this,
-										R.anim.push_right_out));
+//						channel_viewFlipper.setInAnimation(AnimationUtils
+//								.loadAnimation(ChannelActivity.this,
+//										R.anim.push_right_in));
+//						channel_viewFlipper.setOutAnimation(AnimationUtils
+//								.loadAnimation(ChannelActivity.this,
+//										R.anim.push_right_out));
 						channel_viewFlipper.showPrevious();
 					} else {
 						return false;

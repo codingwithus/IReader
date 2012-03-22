@@ -3,10 +3,8 @@
  */
 package www.codingwith.us.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.MotionEvent;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -25,7 +23,6 @@ public class MyWebView extends WebView {
 		// TODO Auto-generated constructor stub
 		mContext = context;
 		getSettings().setJavaScriptEnabled(true);
-		setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
 		setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -44,7 +41,6 @@ public class MyWebView extends WebView {
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				// TODO Auto-generated method stub
-				((Activity) mContext).setProgress(newProgress * 1000);
 			}
 		});
 
