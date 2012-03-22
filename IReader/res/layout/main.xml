@@ -65,7 +65,7 @@
                 android:orientation="vertical" >
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/main_dele"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_rootblock_clear_btn" />
@@ -79,7 +79,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/main_refresh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_rootblock_refresh_btn" />
@@ -93,7 +93,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/main_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_rootblock_set_btn" />
@@ -107,7 +107,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/main_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"

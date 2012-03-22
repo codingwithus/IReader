@@ -3,5 +3,10 @@
 
     <string name="hello">Hello World, ScrollActivity!</string>
     <string name="app_name">eureka</string>
+    <string name="setting_screen_light">screen_light</string>
+    <string name="setting_screen_light_def_val">60</string>
+    <string name="setting_screen_light_on">light_on</string>
+    <string name="setting_doubleclick_close">doubleclick_close</string>
+    <string name="setting_auto_refresh">auto_refresh</string>
 
 </resources>

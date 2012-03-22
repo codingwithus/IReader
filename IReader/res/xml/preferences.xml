@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="设置" >
+
+    <PreferenceCategory
+        android:title="常用设置" >
+        <www.codingwith.us.SeekbarDialogPreference
+            android:key="@string/setting_screen_light"
+            android:summary="根据你的需求可设置屏幕亮度"
+            android:title="屏幕亮度" 
+            android:dialogLayout="@layout/setting_screen_light">
+        </www.codingwith.us.SeekbarDialogPreference>
+        <www.codingwith.us.FlowListPreference
+            android:title="流量模式"
+            android:summary="全图片"
+            android:entries = "@array/mode_flow"
+            android:entryValues = "@array/mode_flow">            
+        </www.codingwith.us.FlowListPreference>
+        <CheckBoxPreference
+            android:key="@string/setting_screen_light_on"
+            android:title="屏幕常亮"
+            android:summary="保持屏幕正常亮度"
+            android:defaultValue="true">            
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="@string/setting_auto_refresh"
+            android:title="自动刷新"
+            android:summary="自动刷新已添加频道信息"
+            android:defaultValue="true">            
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="@string/setting_doubleclick_close"
+            android:title="双击关闭文章"
+            android:summary="当阅读资讯时双击亦可退出阅读"
+            android:defaultValue="true">            
+        </CheckBoxPreference>
+        <www.codingwith.us.FlowListPreference
+            android:title="新增模块"
+            android:summary="放在最后"
+            android:entries = "@array/new_add"
+            android:entryValues = "@array/new_add">            
+        </www.codingwith.us.FlowListPreference>
+    </PreferenceCategory>
+    
+    
+    <PreferenceCategory 
+        android:title="意见反馈">
+        <Preference
+            android:key="help"		
+		    android:title="关于我们"
+			android:summary="欢迎您提出宝贵意见">	 
+    	<intent android:targetPackage="www.codingwith.us" android:targetClass="www.codingwith.us.AboutUsActivity"  />
+		</Preference>
+    </PreferenceCategory>
+    
+</PreferenceScreen>

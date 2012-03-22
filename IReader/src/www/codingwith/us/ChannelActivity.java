@@ -13,7 +13,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
 /**
@@ -48,11 +47,7 @@ public class ChannelActivity extends Activity {
 
 		for (int i = 0; i < 4; i++) {
 			MyWebView webView = new MyWebView(this);
-			if (i % 2 > 0) {
-				webView.loadUrl(Url);
-			} else {
-				webView.loadUrl("http://www.hutaoshu.com");
-			}
+			webView.loadUrl(Url);
 			channel_viewFlipper.addView(webView);
 		}
 

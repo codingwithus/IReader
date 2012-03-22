@@ -26,8 +26,6 @@ public class MyViewGroup extends ViewGroup {
 
 	private ScrollToScreenCallback scrollToScreenCallback;
 
-	public boolean bShow = false;
-
 	public void setScrollToScreenCallback(
 			ScrollToScreenCallback scrollToScreenCallback) {
 		this.scrollToScreenCallback = scrollToScreenCallback;
@@ -164,13 +162,23 @@ public class MyViewGroup extends ViewGroup {
 						.findViewById(R.id.channel_item_remove);
 				if (channel_item_remove.isShown()) {
 					channel_item_remove.setVisibility(INVISIBLE);
-					bShow = false;
 				} else {
 					channel_item_remove.setVisibility(VISIBLE);
-					bShow = true;
 				}
 			}
 		}
+	}
+	public boolean IsShowDelIcon(){
+		if (getChildCount() >0) {
+			FixedGridLayout page = (FixedGridLayout) getChildAt(0);
+			if (page.getChildCount() > 0) {
+				LinearLayout item = (LinearLayout) page.getChildAt(0);
+				ImageView channel_item_remove = (ImageView) item
+						.findViewById(R.id.channel_item_remove);
+				return channel_item_remove.isShown();
+			}
+		}
+		return false;
 	}
 
 }

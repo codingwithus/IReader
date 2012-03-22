@@ -7,14 +7,21 @@ import www.codingwith.us.view.MyViewGroup;
 import www.codingwith.us.view.MyViewGroup.ScrollToScreenCallback;
 import www.codingwith.us.view.Rotate3dAnimation;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
+import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,11 +44,22 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
+		
 
 		pageinfo_num = (TextView) findViewById(R.id.pageinfo_num);
 		pageinfo = (LinearLayout) findViewById(R.id.pageinfo);
 		tool = (LinearLayout) findViewById(R.id.tool);
 		((MyApplication) getApplication()).SetPageInfoWidth(tool.getWidth());
+		
+		Button btn_add = (Button)findViewById(R.id.main_add);
+		btn_add.setOnClickListener(this);
+		Button btn_dele = (Button)findViewById(R.id.main_dele);
+		btn_dele.setOnClickListener(this);
+		
+		Button btn_refresh = (Button)findViewById(R.id.main_refresh);
+		btn_refresh.setOnClickListener(this);
+		Button btn_setting = (Button)findViewById(R.id.main_setting);
+		btn_setting.setOnClickListener(this);
 
 		LinearLayout rootblock_body = (LinearLayout) findViewById(R.id.rootblock_body);
 
@@ -49,7 +67,7 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 
 		SharedPreferences p_channel = getSharedPreferences("p_channel",
 				MODE_PRIVATE);
-		p_channel.edit().putString("p_channel_name", "").commit();
+//		p_channel.edit().putString("p_channel_name", "").commit();
 		mStrChannel = p_channel.getString("p_channel_name", "");
 		if (mStrChannel == "") {
 			String[] channel_init = getResources().getStringArray(
@@ -167,6 +185,16 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 		case R.id.channel_item_remove:
 			mDisplayed.remove(v.getTag().toString());
 			mHided.add(v.getTag().toString());
+			SharedPreferences p_channel = getSharedPreferences("p_channel",
+					MODE_PRIVATE);
+			String strTemp = "";
+			for (int i = 0; i < mDisplayed.size(); i++) {
+				strTemp = strTemp+mDisplayed.get(i)+",1|";
+			}
+			for (int i = 0; i < mHided.size(); i++) {
+				strTemp = strTemp+mHided.get(i)+",0|";
+			}
+			p_channel.edit().putString("p_channel_name", strTemp).commit();
 			InitView();
 			break;
 		case R.id.channel_item_layout:
@@ -174,7 +202,19 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 			intent.putExtra("channel_name", v.getTag().toString());
 			startActivity(intent);
 			break;
-
+		case R.id.main_dele :
+				Dele();
+			break;
+		case R.id.main_refresh :
+				
+			break;
+		case R.id.main_setting :
+				Setting();
+			break;
+		case R.id.main_add :
+			
+			break;
+		
 		default:
 			break;
 		}
@@ -184,11 +224,120 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			if (myViewGroup.bShow) {
+			if (myViewGroup.IsShowDelIcon()) {
 				myViewGroup.ShowDelIcon();
 				return true;
+			}else {
+				Exit();
 			}
 		}
+
 		return super.onKeyDown(keyCode, event);
+	}
+	void Exit(){
+		Builder bExit = new AlertDialog.Builder(this);
+		bExit.setTitle("提示");
+		bExit.setMessage("确定退出？");
+		bExit.setPositiveButton("确定", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+				ScrollActivity.this.finish();
+			}
+		});
+		bExit.setNegativeButton("取消", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		bExit.create().show();
+	}
+	void Refresh(){
+		
+	}
+	void Dele(){
+		Builder bDele = new AlertDialog.Builder(this);
+		bDele.setTitle("清除缓存");
+		bDele.setMessage("确定要清除当天之前的所有缓存文件？");
+		bDele.setPositiveButton("确定", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		bDele.setNegativeButton("取消", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+		bDele.create().show();
+	}
+	void Setting(){
+		Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+		startActivity(intent);
+	}
+	void Add(){
+		
+	}
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		InitScreenLight();
+	}
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		InitScreenLight();
+	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	void InitScreenLight(){
+		Window window = getWindow();
+		LayoutParams lp = window.getAttributes();
+		String strKey = getResources().getString(R.string.setting_screen_light);
+		String setting_screen_light_def_val = getResources().getString(R.string.setting_screen_light_def_val);
+		Integer def_val = Integer.valueOf(setting_screen_light_def_val);
+		int barValue = PreferenceManager.getDefaultSharedPreferences(this).getInt(strKey, def_val);
+		if (barValue < 1) {
+			barValue = 1;
+		}
+		float temp = barValue/100.0f;
+		lp.screenBrightness = temp;
+		window.setAttributes(lp);
 	}
 }
