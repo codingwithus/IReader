@@ -6,7 +6,6 @@ import www.codingwith.us.view.FixedGridLayout;
 import www.codingwith.us.view.MyViewGroup;
 import www.codingwith.us.view.MyViewGroup.ScrollToScreenCallback;
 import www.codingwith.us.view.Rotate3dAnimation;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -15,18 +14,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScrollActivity extends Activity implements ScrollToScreenCallback,
+public class ScrollActivity extends BaseActivity implements ScrollToScreenCallback,
 		android.view.View.OnClickListener {
 
 	private TextView pageinfo_num;
@@ -288,56 +285,5 @@ public class ScrollActivity extends Activity implements ScrollToScreenCallback,
 	}
 	void Add(){
 		
-	}
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-	}
-	@Override
-	protected void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-	}
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onRestoreInstanceState(savedInstanceState);
-	}
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		InitScreenLight();
-	}
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		InitScreenLight();
-	}
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-	void InitScreenLight(){
-		Window window = getWindow();
-		LayoutParams lp = window.getAttributes();
-		String strKey = getResources().getString(R.string.setting_screen_light);
-		String setting_screen_light_def_val = getResources().getString(R.string.setting_screen_light_def_val);
-		Integer def_val = Integer.valueOf(setting_screen_light_def_val);
-		int barValue = PreferenceManager.getDefaultSharedPreferences(this).getInt(strKey, def_val);
-		if (barValue < 1) {
-			barValue = 1;
-		}
-		float temp = barValue/100.0f;
-		lp.screenBrightness = temp;
-		window.setAttributes(lp);
 	}
 }

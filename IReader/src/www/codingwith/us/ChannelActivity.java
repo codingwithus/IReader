@@ -4,7 +4,6 @@
 package www.codingwith.us;
 
 import www.codingwith.us.view.MyWebView;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -19,7 +18,7 @@ import android.widget.ViewFlipper;
  * @author chenwei
  * 
  */
-public class ChannelActivity extends Activity {
+public class ChannelActivity extends BaseActivity {
 
 	private ViewFlipper channel_viewFlipper;
 	private String Url;
