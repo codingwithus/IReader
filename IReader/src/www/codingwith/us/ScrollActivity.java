@@ -195,7 +195,7 @@ public class ScrollActivity extends BaseActivity implements ScrollToScreenCallba
 			InitView();
 			break;
 		case R.id.channel_item_layout:
-			Intent intent = new Intent(this, ChannelActivity.class);
+			Intent intent = new Intent(this, TitleActivity.class);
 			intent.putExtra("channel_name", v.getTag().toString());
 			startActivity(intent);
 			break;

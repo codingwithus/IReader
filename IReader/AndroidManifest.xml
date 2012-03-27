@@ -22,12 +22,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity 
             android:name=".ChannelActivity" 
             android:screenOrientation="portrait">           
         </activity>
-        <activity android:name="SettingActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name="AboutUsActivity" android:screenOrientation="portrait"></activity>
+        <activity 
+            android:name=".TitleActivity" 
+            android:screenOrientation="portrait">           
+        </activity>
+        <activity 
+            android:name="SettingActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity 
+            android:name="AboutUsActivity" 
+            android:screenOrientation="portrait">
+        </activity>
         
     </application>
 
