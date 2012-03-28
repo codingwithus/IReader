@@ -3,24 +3,18 @@
  */
 package www.codingwith.us.task;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 
 import www.codingwith.us.ICallBack;
 import www.codingwith.us.util.Util;
-
 import android.os.AsyncTask;
-import android.util.Log;
 
 /**
  * @author chenwei10

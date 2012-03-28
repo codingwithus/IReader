@@ -12,11 +12,11 @@ import org.json.JSONObject;
 import www.codingwith.us.task.TitleTask;
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -28,21 +28,24 @@ import android.widget.ViewFlipper;
  *
  */
 public class TitleActivity extends Activity implements ICallBack{
-private ViewFlipper channel_viewFlipper;
 private GestureDetector gesture;
+private int numPage = 1;
+protected ViewFlipper channel_viewFlipper;
+private TextView page_num;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		channel_viewFlipper = new ViewFlipper(this);
-		setContentView(channel_viewFlipper);
+		setContentView(R.layout.title);
+		channel_viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
+		page_num = (TextView)findViewById(R.id.page_num);
 		String url = "http://ws1z.com/t.php";
+//		String url = "http://58.215.184.11/t.json";
 		new TitleTask().execute(this,url);
-		
+				
 		gesture = new GestureDetector(new OnGestureListener() {
-
 			@Override
 			public boolean onDown(MotionEvent e) {
 				// TODO Auto-generated method stub
@@ -66,6 +69,7 @@ private GestureDetector gesture;
 //								.loadAnimation(ChannelActivity.this,
 //										R.anim.push_left_out));
 						channel_viewFlipper.showNext();
+						page_num.setText(numPage++ + "/12");
 					} else if (e1.getX() < e2.getX()) {
 						// to right
 //						channel_viewFlipper.setInAnimation(AnimationUtils
@@ -75,6 +79,7 @@ private GestureDetector gesture;
 //								.loadAnimation(ChannelActivity.this,
 //										R.anim.push_right_out));
 						channel_viewFlipper.showPrevious();
+						page_num.setText(numPage-- + "/12");
 					} else {
 						return false;
 					}
@@ -118,49 +123,47 @@ private GestureDetector gesture;
 			String jsonString = map.get("data").toString();
 			try {
 				JSONArray page_array = new JSONArray(jsonString);
-				for (int i = 0; i < page_array.length(); i++) {
-					JSONArray page = (JSONArray)page_array.get(i);
-					LinearLayout linear = new LinearLayout(this);
-					linear.setOrientation(LinearLayout.VERTICAL);
-					for (int j = 0; j < page.length(); j++) {
-						JSONObject conment = (JSONObject)page.get(i);
-						String title = (String)conment.get("title");
-						if (j%2 == 0) {
-							linear.addView(GetTitleText(title));
-						}else {
-							linear.addView(GetTitleImageText(title));
-						}
-					}
-					channel_viewFlipper.addView(linear);
+				for (int k = 0; k < page_array.length(); k++) {
+					LayoutInflater inflater = getLayoutInflater();  
+					LinearLayout title_item = (LinearLayout)inflater.inflate(R.layout.title_item, null);
+					JSONArray page = (JSONArray)page_array.get(k);
+					
+					TextView tc_1 = (TextView)title_item.findViewById(R.id.tc_1);
+					JSONObject data1 = (JSONObject)page.get(0);
+					tc_1.setText(Html.fromHtml(data1.getString("title")));
+					tc_1.setTag(data1.getString("url"));
+					
+					TextView tc_2 = (TextView)title_item.findViewById(R.id.tc_2);
+					JSONObject data2 = (JSONObject)page.get(1);
+					tc_2.setText(Html.fromHtml(data1.getString("title")));
+					tc_2.setTag(data1.getString("url"));
+					
+					TextView tc_3 = (TextView)title_item.findViewById(R.id.tc_3);
+					JSONObject data3 = (JSONObject)page.get(2);
+					tc_3.setText(Html.fromHtml(data1.getString("title")));
+					tc_3.setTag(data1.getString("url"));
+					
+					TextView tc_4 = (TextView)title_item.findViewById(R.id.tc_4);
+					JSONObject data4 = (JSONObject)page.get(3);
+					tc_4.setText(Html.fromHtml(data1.getString("title")));
+					tc_4.setTag(data1.getString("url"));
+					
+					TextView tc_5 = (TextView)title_item.findViewById(R.id.tc_5);
+					JSONObject data5 = (JSONObject)page.get(4);
+					tc_5.setText(Html.fromHtml(data1.getString("title")));
+					tc_5.setTag(data1.getString("url"));
+					
+					TextView tc_6 = (TextView)title_item.findViewById(R.id.tc_6);
+					JSONObject data6 = (JSONObject)page.get(5);
+					tc_6.setText(Html.fromHtml(data1.getString("title")));
+					tc_6.setTag(data1.getString("url"));
+
+					channel_viewFlipper.addView(title_item);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			
+			}		
 		}
-	}
-	View GetTitleText(String conment){
-		LayoutInflater inflater = getLayoutInflater();  
-		LinearLayout title_text = (LinearLayout)inflater.inflate(R.layout.title_text, null);
-		TextView title_conment1 = (TextView)title_text.findViewById(R.id.title_conment1);
-		TextView title_conment2 = (TextView)title_text.findViewById(R.id.title_conment2);
-		title_conment1.setText(conment);
-		title_conment2.setText(conment);
-		return title_text;		
-	}
-	View GetTitleImageText(String conment){
-		LayoutInflater inflater = getLayoutInflater();  
-		LinearLayout title_image_text = (LinearLayout)inflater.inflate(R.layout.title_image_text, null);
-		TextView title_image_text_conment = (TextView)title_image_text.findViewById(R.id.title_image_text_conment);
-		title_image_text_conment.setText(conment);
-		return title_image_text;
-	}
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		// TODO Auto-generated method stub
-		gesture.onTouchEvent(ev);
-		return super.dispatchTouchEvent(ev);
 	}
 }
