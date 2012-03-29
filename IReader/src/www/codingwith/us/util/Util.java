@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.Toast;
+
 public class Util {
 	public static String convertStreamToString(InputStream is) {   
         /*  
@@ -33,4 +38,19 @@ public class Util {
     
         return sb.toString();   
     }
+	public static ProgressDialog ShowProgressDialog(Context context, String text) {
+		ProgressDialog progressDialog = new ProgressDialog(context);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		if (text != null) {
+			progressDialog.setMessage(text);
+		} else {
+			progressDialog.setMessage("正在加载数据...");
+		}
+		return progressDialog;
+	}
+	public static void ShowTips(Context context, String conment) {
+		Toast toast = Toast.makeText(context, conment, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
+	}
 }

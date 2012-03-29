@@ -39,6 +39,10 @@
             android:name="AboutUsActivity" 
             android:screenOrientation="portrait">
         </activity>
+        <activity 
+            android:name="DetailActivity" 
+            android:screenOrientation="portrait">
+        </activity>
         
     </application>
 

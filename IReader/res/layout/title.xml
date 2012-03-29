@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" android:layout_weight="1">
 
-        <ViewFlipper
+        <www.codingwith.us.view.FlipLayout
             android:id="@+id/viewFlipper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
-        </ViewFlipper>
+        </www.codingwith.us.view.FlipLayout>
 
     </LinearLayout>
 

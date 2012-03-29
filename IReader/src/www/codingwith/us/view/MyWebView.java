@@ -3,6 +3,8 @@
  */
 package www.codingwith.us.view;
 
+import www.codingwith.us.R;
+import android.app.Activity;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.webkit.WebChromeClient;
@@ -41,6 +43,10 @@ public class MyWebView extends WebView {
 			@Override
 			public void onProgressChanged(WebView view, int newProgress) {
 				// TODO Auto-generated method stub
+				((Activity)mContext).setProgress(newProgress*100);
+				if (newProgress == 100) {
+					((Activity)mContext).setTitle(R.string.app_name);
+				}
 			}
 		});
 
