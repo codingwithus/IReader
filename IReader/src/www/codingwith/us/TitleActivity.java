@@ -77,8 +77,7 @@ private String url;
 			public boolean onFling(MotionEvent e1, MotionEvent e2,
 					float velocityX, float velocityY) {
 				// TODO Auto-generated method stub
-				if (Math.abs(e1.getX() - e2.getX()) > 150
-						&& Math.abs(velocityX) > ViewConfiguration.get(
+				if (Math.abs(velocityX) > ViewConfiguration.get(
 								getApplicationContext())
 								.getScaledMinimumFlingVelocity()) {
 					if (e1.getX() > e2.getX()) {
@@ -91,12 +90,14 @@ private String url;
 //										R.anim.push_left_out));
 						if (numPage >= page_data.size()) {
 							Util.ShowTips(getApplicationContext(), "请稍等......");
+							new TitleTask().execute(TitleActivity.this,url);
 							return true;
 						}else if (numPage >= page_data.size() - 4) {
-							new TitleTask().execute(TitleActivity.this,url);
+							
 						}
 						channel_viewFlipper.showNext();
-						page_num.setText(numPage++ + "/" +page_data.size());
+						numPage = numPage+1;
+						page_num.setText(numPage + "/" +page_data.size());
 						return true;
 					} else if (e1.getX() < e2.getX()) {
 						// to right
@@ -111,7 +112,8 @@ private String url;
 							return true;
 						}
 						channel_viewFlipper.showPrevious();
-						page_num.setText(numPage-- + "/" +page_data.size());
+						numPage = numPage-1;
+						page_num.setText(numPage + "/" +page_data.size());
 						return true;
 					}else {
 						return false;
@@ -151,11 +153,6 @@ private String url;
 	@Override
 	public void doCallBack(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		if (progressDialog != null) {
-			if (progressDialog.isShowing()) {
-				progressDialog.dismiss();
-			}
-		}
 		if (map.get("data") != null) {
 			String jsonString = map.get("data").toString();
 			try {
@@ -209,6 +206,11 @@ private String url;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
+		}
+		if (progressDialog != null) {
+			if (progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
 		}
 	}
 	
