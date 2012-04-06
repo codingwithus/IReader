@@ -26,6 +26,8 @@ public class MyViewGroup extends ViewGroup {
 
 	private ScrollToScreenCallback scrollToScreenCallback;
 
+	private boolean fling;
+
 	public void setScrollToScreenCallback(
 			ScrollToScreenCallback scrollToScreenCallback) {
 		this.scrollToScreenCallback = scrollToScreenCallback;
@@ -80,10 +82,12 @@ public class MyViewGroup extends ViewGroup {
 						.getScaledMinimumFlingVelocity()) {
 					if (velocityX > 0 && currentScreenIndex > 0) {
 						Log.d(TAG, ">>>>fling to left");
+						fling = true;
 						scrollToScreen(currentScreenIndex - 1);
 					} else if (velocityX < 0
 							&& currentScreenIndex < getChildCount() - 1) {
 						Log.d(TAG, ">>>>fling to right");
+						fling = true;
 						scrollToScreen(currentScreenIndex + 1);
 					}
 				}
@@ -123,6 +127,20 @@ public class MyViewGroup extends ViewGroup {
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		gestureDetector.onTouchEvent(event);
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			break;
+		case MotionEvent.ACTION_MOVE:
+			break;
+		case MotionEvent.ACTION_UP:
+			if (!fling) {
+				snapToDestination();
+			}
+			fling = false;
+			break;
+		default:
+			break;
+		}
 		return true;
 	}
 
@@ -180,5 +198,7 @@ public class MyViewGroup extends ViewGroup {
 		}
 		return false;
 	}
-
+	private void snapToDestination() {
+		scrollToScreen((getScrollX() + (getWidth() / 2)) / getWidth());
+	}
 }

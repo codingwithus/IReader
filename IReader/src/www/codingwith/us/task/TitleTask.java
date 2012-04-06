@@ -20,7 +20,7 @@ import android.os.AsyncTask;
  * @author chenwei10
  *
  */
-public class TitleTask extends AsyncTask<Object, Object, Object> {
+public class TitleTask extends BaseAsyncTask<Object, Object, Object> {
 
 	private String mJsonString;
 	private ICallBack mCallBack;
